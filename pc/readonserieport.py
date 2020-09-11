@@ -1,4 +1,6 @@
-import serial,time
+#!/usr/bin/python
+import serial, datetime, time
+
 #initialization and open the port
 ser = serial.Serial()
 ser.port = "/dev/ttyACM0"
@@ -15,11 +17,12 @@ try:
 except Exception, e:
     print "error open serial port: " + str(e)
     exit()
-
+today = datetime.datetime.now()
+print("Date: " + today.strftime("%Y-%m-%d"))
 while ser.isOpen():
-    read_data = ser.read(20)
-   # response  = ser.readline()
-    print"Data received : " + read_data
+    ser.write(b"te\n")
+    dt = datetime.datetime.now()
+    response  = ser.readline()
+    print("time: " + dt.strftime("%H:%M") + " temperature: %s" % response)
+    time.sleep(30) # sleep 30 seconds
 
-#else:
-#    print "Can not open serial port"
