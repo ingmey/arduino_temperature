@@ -1,15 +1,15 @@
-int tempPin = 1;
- 
+
 boolean newData = false;
 
 void setup()
 {
   Serial.begin(9600);
-  Serial.println("<Arduino ready>");
+  Serial.println("yes");
 }
 void loop()
 {
   recvWithEndMarker();
+  int tempPin = 1;
   float cel = getTemperature(tempPin);
   if (newData == true) {
     Serial.println(cel);
@@ -18,7 +18,8 @@ void loop()
 }
 
 float getTemperature(int tempPin) {
-  int val = analogRead(tempPin);
+  int val = 0;
+  val = analogRead(tempPin);
   float mv = ( val/1024.0)*5000;
   float cel = mv/10;
   return cel;
