@@ -18,8 +18,15 @@ except Exception, e:
     print "error open serial port: " + str(e)
     exit()
 today = datetime.datetime.now()
-print("Date: " + today.strftime("%Y-%m-%d"))
+todaydate1 =today.strftime("%Y-%m-%d")
+print("Date: " + todaydate1)
 while ser.isOpen():
+    today = datetime.datetime.now()
+
+    todaydate2 =today.strftime("%Y-%m-%d")
+    if todaydate1 != todaydate2:
+        todaydate1 = todaydate2
+        print("Date: " + todaydate1)
     ser.write(b"te\n")
     dt = datetime.datetime.now()
     response  = ser.readline()
