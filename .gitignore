@@ -1,0 +1,3 @@
+# gitignore file
+# ignore all *.pyc files
+*.pyc

@@ -14,5 +14,5 @@ def read_temperature(ser):
         dt = datetime.datetime.now()
         response  = ser.readline()
         print("time: " + dt.strftime("%H:%M") + " temperature: %s" % response)
-        time.sleep(30) # sleep 30 seconds
+
 
