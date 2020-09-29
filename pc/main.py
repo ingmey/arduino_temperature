@@ -12,13 +12,12 @@ if __name__ == "__main__":
         ret = checkPortConnect.check_presence(device)
         if ret:
             serialport = serialportinit.init_port(device)
-            try:
+            if(serialport.isOpen() == False):
                 serialport.open()
                 serialportopen = True
-            except:
-                print " error open serial port: " + str(e)
-                exit()
-            print ret
+                print "serial port open"
+            else:
+                print "serial port allready open "
             today = datetime.datetime.now()
             todaydate1 =today.strftime("%Y-%m-%d")
             print("Date: " + todaydate1)
@@ -29,7 +28,5 @@ if __name__ == "__main__":
                 if todaydate1 != todaydate2:
                     todaydate1 = todaydate2
                     print("Date: " + todaydate1)
-
-                print ret
                 readonserieport.read_temperature(serialport)
             serialport.close() 
