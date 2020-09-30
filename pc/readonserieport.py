@@ -8,7 +8,5 @@ def read_temperature(ser):
     time.sleep(1) # wait for response 1 seconds
     response  = ser.readline()
     responsecheck = response.strip()
-    if(response.strip() == 'yes'):
-        print(" ")
-    else:
-        print("time: " + dt.strftime("%H:%M") + " temperature: %s" % response)
+    if(response.strip() != 'yes'):
+        return "time: " + dt.strftime("%H:%M") + " temperature: %s" % response

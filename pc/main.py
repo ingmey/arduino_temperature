@@ -3,21 +3,25 @@ import datetime, time
 import checkPortConnect
 import serialportinit
 import readonserieport
+import signal
+import sys
 
 device = '/dev/ttyACM0'
 
+
 if __name__ == "__main__":
-    serialportopen = False
+    stored_exception = None
     while True:
         ret = checkPortConnect.check_presence(device)
         if ret:
             serialport = serialportinit.init_port(device)
-            if(serialport.isOpen() == False):
+            #time.sleep(2 * 60) # wait for port to b ready
+            try:
                 serialport.open()
-                serialportopen = True
                 print "serial port open"
-            else:
-                print "serial port allready open "
+            except serial.serialutil.SerialException:
+                print "could not open serial port open " + e
+                quit()
             today = datetime.datetime.now()
             todaydate1 =today.strftime("%Y-%m-%d")
             print("Date: " + todaydate1)
@@ -28,5 +32,7 @@ if __name__ == "__main__":
                 if todaydate1 != todaydate2:
                     todaydate1 = todaydate2
                     print("Date: " + todaydate1)
-                readonserieport.read_temperature(serialport)
-            serialport.close() 
+                ret = readonserieport.read_temperature(serialport)
+                if ret:
+                    print ret
+            serialport.close()
