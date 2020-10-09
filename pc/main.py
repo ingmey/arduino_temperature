@@ -19,7 +19,8 @@ if __name__ == "__main__":
             ser.port = device
             ser.baudrate = 9600
             ser.timeout = 5
-            print "Wait 1,5 minutes for the Arduino to connect to the serial port"
+            print "Wait 1,5 minutes for the Arduino"
+            print "to connect to the serial port"
             time.sleep(90) # wait for port to be ready about 2 minutes
             try:
                 ser.open()
@@ -29,7 +30,10 @@ if __name__ == "__main__":
                 quit()
             today = datetime.datetime.now()
             todaydate1 =today.strftime("%Y-%m-%d")
-            print("Date: " + todaydate1)
+            f = open('temperaturelog.txt', 'a')
+            datestr = 'Date: ' + todaydate1 + '\n'
+            print(datestr)
+            f.write(datestr)
             while ser.is_open:
                 try:
                     ser.flushInput()
@@ -43,8 +47,11 @@ if __name__ == "__main__":
                     ret = readonserieport.read_temperature(ser)
                     if ret:
                         print ret
+                        f.write(ret)
                 except (KeyboardInterrupt, SystemExit):
                     ser.close()
+                    f.close()
                     quit()
                     
             ser.close()
+            f.close()
