@@ -1,3 +1,6 @@
 # gitignore file
 # ignore all *.pyc files
 *.pyc
+# ignore all *.log files
+*.log
+
