@@ -28,10 +28,12 @@ if __name__ == "__main__":
             except Expection, e: #serial.serialutil.SerialException
                 print ("could not open serial port") + str(e)
                 quit()
-            today = datetime.datetime.now()
-            todaydate1 =today.strftime("%Y-%m-%d")
-            f = open('temperaturelog.txt', 'a')
-            datestr = 'Date: ' + todaydate1 + '\n'
+            current_date_and_time = datetime.datetime.now()
+            current_date = current_date_and_time.strftime("%Y%m%d")
+            file_name_end = "_temperatureTest.log"
+            file_name = str(current_date) + file_name_end
+            f = open(file_name, 'a')
+            datestr = 'Date: ' + current_date + '\n'
             print(datestr)
             f.write(datestr)
             while ser.is_open:
@@ -39,11 +41,14 @@ if __name__ == "__main__":
                     ser.flushInput()
                     ser.flushOutput()
                     time.sleep(5) # sleep 5 seconds
-                    today = datetime.datetime.now()
-                    todaydate2 =today.strftime("%Y-%m-%d")
-                    if todaydate1 != todaydate2:
-                        todaydate1 = todaydate2
-                        print("Date: " + todaydate1)
+                    current_date_and_time = datetime.datetime.now()
+                    current_date2 = current_date_and_time.strftime("%Y%m%d")
+                    if current_date !=  current_date2:
+                        f.close()
+                        current_date =  current_date2
+                        file_name = str(current_date) + file_name_end
+                        f = open(file_name, 'a')
+                        print("Date: " + current_date)
                     ret = readonserieport.read_temperature(ser)
                     if ret:
                         print ret
