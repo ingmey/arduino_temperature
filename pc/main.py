@@ -1,14 +1,18 @@
 # Main program for logging temperature
+import ConfigParser
 import datetime, time 
 import checkPortConnect
 import readonserieport
 import serial
 import sys
 
-device = '/dev/ttyACM0'
-
 
 if __name__ == "__main__":
+    # read config parameters
+    cfg = ConfigParser.ConfigParser()
+    cfg.read('temperaturemeasureconfig.cfg')
+    device = cfg.get('Section1', 'device')
+    file_name_end = cfg.get('Section1', 'Filename')
     stored_exception = None
     while True:
         ret = checkPortConnect.check_presence(device)
@@ -30,7 +34,6 @@ if __name__ == "__main__":
                 quit()
             current_date_and_time = datetime.datetime.now()
             current_date = current_date_and_time.strftime("%Y%m%d")
-            file_name_end = "_temperatureTest.log"
             file_name = str(current_date) + file_name_end
             f = open(file_name, 'a')
             datestr = 'Date: ' + current_date + '\n'

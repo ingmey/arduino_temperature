@@ -1,4 +1,6 @@
 # gitignore file
+# ignore all *.cfg files
+*.cfg
 # ignore all *.pyc files
 *.pyc
 # ignore all *.log files
