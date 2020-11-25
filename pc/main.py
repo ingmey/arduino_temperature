@@ -1,7 +1,8 @@
 # Main program for logging temperature
 import ConfigParser
-import datetime, time 
+import datetime, time
 import checkPortConnect
+import meanvaluecal
 import readonserieport
 import serial
 import sys
@@ -25,7 +26,7 @@ if __name__ == "__main__":
             ser.timeout = 5
             print "Wait 1,5 minutes for the Arduino"
             print "to connect to the serial port"
-            time.sleep(90) # wait for port to be ready about 2 minutes
+            time.sleep(90) # wait 2 minutes for port to be ready
             try:
                 ser.open()
                 print "serial port has been open"
@@ -38,7 +39,8 @@ if __name__ == "__main__":
             f = open(file_name, 'a')
             datestr = 'Date: ' + current_date + '\n'
             print(datestr)
-            f.write(datestr)
+            f.write(datestr + '\n')
+            tempvalueList = []
             while ser.is_open:
                 try:
                     ser.flushInput()
@@ -55,7 +57,12 @@ if __name__ == "__main__":
                     ret = readonserieport.read_temperature(ser)
                     if ret:
                         print ret
-                        f.write(ret)
+                        tempvalueList.append(ret)
+                        if len(tempvalueList) >= 10:
+                            retStr = meanvaluecal.calcMeanValue(tempvalueList)
+                            print retStr
+                            f.write(retStr + '\n')
+                            del tempvalueList [:]
                 except (KeyboardInterrupt, SystemExit):
                     ser.close()
                     f.close()
